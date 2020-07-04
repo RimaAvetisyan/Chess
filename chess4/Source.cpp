@@ -10,14 +10,14 @@ using namespace std;
 
 class Chess {
 public:
-    vector <vector<int>> board = { {-1,-2,-3,-4,-5,-3,-2,-1},
+    vector <vector<int>> board = {{-1,-2,-3,-4,-5,-3,-2,-1},
                                    {-6,-6,-6,-6,-6,-6,-6,-6},
-                                   { 0, 0, 0, 0, 0, 0, 0, 0},
-                                   { 0, 0, 0, 0, 0, 0, 0, 0},
-                                   { 0, 0, 0, 0, 0, 0, 0, 0},
-                                   { 0, 0, 0, 0, 0, 0, 0, 0},
-                                   { 6, 6, 6, 6, 6, 6, 6, 6},
-                                   { 1, 2, 3, 4, 5, 3, 2, 1} };
+                                   {0,0,0,0,0,0,0,0},
+                                   {0,0,0,0,0,0,0,0},
+                                   {0,0,0,0,0,0,0,0},
+                                   {0,0,0,0,0,0,0,0},
+                                   {6,6,6,6,6,6,6,6},
+                                   {1,2,3,4,5,3,2,1}};
     
     void move(string posit, string step);
     set<vector<int>> under_attack(vector<vector<int>>board, int color);
@@ -40,37 +40,37 @@ public:
 
 
 
-set<vector<int>> Chess:: under_attack(vector<vector<int>>board1, int color) {
+set<vector<int>> Chess:: under_attack(vector<vector<int>> board1, int color) {
     set<vector<int>> gps;
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            if (board1[i][j] == color*6) {
+            if (board1[i][j] == (color*6)) {
                 for (size_t k = 0; k < pawnattack(i + 1, j + 1,color).size(); k++) {
                     gps.insert({ pawnattack(i + 1, j + 1,color)[k] });
                 }
 
             }
-            if (board1[i][j] == color * 1) {
+            if (board1[i][j] == (color * 1)) {
                 for (size_t k = 0; k < rookattack(i + 1, j + 1).size(); k++) {
                     gps.insert( rookattack(i + 1, j + 1)[k] );
                 }
             }
-            if (board1[i][j] == color * 2) {
+            if (board1[i][j] == (color * 2)) {
                 for (size_t k = 0; k < (knightattack(i + 1, j + 1).size()); k++) {
                     gps.insert( knightattack(i + 1, j + 1)[k] );
                 }
             }
-            if (board1[i][j] == color * 3) {
+            if (board1[i][j] == (color * 3)) {
                 for (size_t k = 0; k < (bishopattack(i + 1, j + 1).size()); k++) {
                     gps.insert( bishopattack(i + 1, j + 1)[k] );
                 }
             }
-            if (board1[i][j] == color * 4) {
+            if (board1[i][j] == (color * 4)) {
                 for (size_t k = 0; k < (queenattack(i + 1, j + 1).size()); k++) {
                     gps.insert( queenattack(i + 1, j + 1)[k] );
                 }
             }
-            if (board1[i][j] == color * 5) {
+            if (board1[i][j] == (color * 5)) {
                 for (size_t k = 0; k < (kingattack(i + 1, j + 1).size()); k++) {
                     gps.insert( kingattack(i + 1, j + 1)[k] );
                 }
@@ -368,7 +368,6 @@ vector<vector<vector<int>>> Chess:: general_poss_st(vector<vector<int>> board, i
         }
     }
     vector<vector<int>>board2;
-    board2 = board;
     for (size_t i = 0; i < gps.size(); i++) {
         board2 = board;
        int a = gps[i][0][0];
@@ -510,7 +509,7 @@ vector<vector<int>> Chess:: knightposs(int x, int y) {
 }
 vector<vector<int>> Chess:: bishopposs(int x, int y) {
     vector <vector <int>> steps;
-    while (x < 8 && y < 8) {
+    while (x < 7 && y < 7) {
         if (board[x + 1][y + 1] > 0) {
             break;
         }
@@ -518,7 +517,7 @@ vector<vector<int>> Chess:: bishopposs(int x, int y) {
         x++;
         y++;
     }
-    while (x < 8 && y>1) {
+    while (x < 7 && y>2) {
         if (board[x + 1][y - 1]) {
             break;
         }
@@ -526,7 +525,7 @@ vector<vector<int>> Chess:: bishopposs(int x, int y) {
         x++;
         y--;
     }
-    while (x > 1 && y > 1) {
+    while (x > 2 && y > 2) {
         if (board[x - 1][y - 1]) {
             break;
         }
@@ -534,7 +533,7 @@ vector<vector<int>> Chess:: bishopposs(int x, int y) {
         x--;
         y--;
     }
-    while (x < 1 && y < 8) {
+    while (x < 2 && y < 7) {
         if (board[x - 1][y + 1]) {
             break;
         }
@@ -547,7 +546,7 @@ vector<vector<int>> Chess:: bishopposs(int x, int y) {
 }
 vector<vector<int>> Chess:: queenposs(int x, int y) {
     vector <vector <int>> steps;
-    while (x < 8) {
+    while (x < 7) {
         if (board[x + 1][y] > 0) {
             break;
         }
@@ -556,7 +555,7 @@ vector<vector<int>> Chess:: queenposs(int x, int y) {
             x++;
         }
     }
-    while (x > 1) {
+    while (x > 2) {
         if (board[x - 1][y] > 0) {
             break;
         }
@@ -565,7 +564,7 @@ vector<vector<int>> Chess:: queenposs(int x, int y) {
             x--;
         }
     }
-    while (y < 8) {
+    while (y < 7) {
         if (board[x][y + 1] > 0) {
             break;
         }
@@ -574,7 +573,7 @@ vector<vector<int>> Chess:: queenposs(int x, int y) {
             y++;
         }
     }
-    while (y > 1) {
+    while (y > 2) {
         if (board[x][y - 1] > 0) {
             break;
 
@@ -584,7 +583,7 @@ vector<vector<int>> Chess:: queenposs(int x, int y) {
             y--;
         }
     }
-    while (x < 8 && y < 8) {
+    while (x < 7 && y < 7) {
         if (board[x + 1][y + 1] > 0) {
             break;
         }
@@ -592,7 +591,7 @@ vector<vector<int>> Chess:: queenposs(int x, int y) {
         x++;
         y++;
     }
-    while (x < 8 && y>1) {
+    while (x < 7 && y>2) {
         if (board[x + 1][y - 1]) {
             break;
         }
@@ -600,7 +599,7 @@ vector<vector<int>> Chess:: queenposs(int x, int y) {
         x++;
         y--;
     }
-    while (x > 1 && y > 1) {
+    while (x > 2 && y > 2) {
         if (board[x - 1][y - 1]) {
             break;
         }
@@ -608,7 +607,7 @@ vector<vector<int>> Chess:: queenposs(int x, int y) {
         x--;
         y--;
     }
-    while (x < 1 && y < 8) {
+    while (x < 2 && y < 7) {
         if (board[x - 1][y + 1]) {
             break;
         }
@@ -621,27 +620,27 @@ vector<vector<int>> Chess:: queenposs(int x, int y) {
 }
 vector<vector<int>> Chess:: kingposs(int x, int y, int color) {
     vector <vector <int>> steps;
-    if (y < 8) {
+    if (y < 7) {
         steps.push_back({ x, y + 1 });
-        if (x < 8) {
+        if (x < 7) {
             steps.push_back({ x + 1, y + 1 });
         }
     }
-    if (x < 8) {
+    if (x < 7) {
         steps.push_back({ x + 1, y });
         if (y > 1) {
             steps.push_back({ x + 1, y - 1 });
         }
     }
-    if (y > 1) {
+    if (y > 2) {
         steps.push_back({ x, y - 1 });
-        if (x > 1) {
+        if (x > 2) {
             steps.push_back({ x - 1, y - 1 });
         }
     }
-    if (x > 1) {
+    if (x > 2) {
         steps.push_back({ x - 1, y });
-        if (y < 8) {
+        if (y < 7) {
             steps.push_back({ x - 1, y + 1 });
         }
     }
@@ -667,7 +666,7 @@ vector<vector<int>> Chess:: kingposs(int x, int y, int color) {
  
 for (size_t i = 0; i < steps.size(); i++) {
    
-    if (find(under_attack(board,-1).begin(), under_attack(board,-1).end(), steps[i]) != under_attack(board,-1).end()) {
+    if (find(under_attack(board,-1*color).begin(), under_attack(board,-1*color).end(), steps[i]) != under_attack(board,-1*color).end()) {
         steps.erase(steps.begin() + i);
     }
 }
@@ -704,10 +703,10 @@ int print(vector <vector<int>> v) {
 }
 
 void Chess::move(string posit, string step) {
-    int a = int(posit[0]) - 97;
-    int b = int(posit[1])-1;
-    int x = int(step[0]) - 97;
-    int y = int(step[1])-1;
+    int a = int(posit[0]) - 96;
+    int b = int(posit[1]);
+    int x = int(step[0]) - 96;
+    int y = int(step[1]);
     bool t = false;
     for (int i = 0; i < general_poss_st(board, -1).size(); i++) {
         for (int j = 0; j < general_poss_st(board, -1)[i].size(); j++) {
