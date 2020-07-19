@@ -365,45 +365,44 @@ vector<vector<vector<int>>> Board::general_poss_st( int color) {
     return gps;
 }
 
-bool inadmissible_step(vector<vector<int>> board, int color) {
+bool Board::inadmissible_step(vector<vector<int>> board1, int color) {
 
     set<vector<int>> gps;
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if (board[i][j] == (color * 6)) {
-                for (size_t k = 0; k < pawnattack(i + 1, j + 1, board, color).size(); k++) {
-                    gps.insert({ pawnattack(i + 1, j + 1, board,color)[k] });
-                }
+                vector<vector<int>> pawnres = pawnattack(i + 1, j + 1, board1, color);
+                gps.insert(pawnres.begin(), pawnres.end());
+
 
             }
             if (board[i][j] == (color * 1)) {
-                for (size_t k = 0; k < rookattack(i + 1, j + 1, board).size(); k++) {
-                    gps.insert(rookattack(i + 1, j + 1, board)[k]);
-                }
+                vector<vector<int>> rookres = rookattack(i + 1, j + 1, board1);
+                gps.insert(rookres.begin(), rookres.end());
+
             }
             if (board[i][j] == (color * 2)) {
-                for (size_t k = 0; k < (knightattack(i + 1, j + 1, board).size()); k++) {
-                    gps.insert(knightattack(i + 1, j + 1, board)[k]);
-                }
+                vector<vector<int>> knightres = knightattack(i + 1, j + 1, board1);
+                gps.insert(knightres.begin(), knightres.end());
+                
             }
             if (board[i][j] == (color * 3)) {
-                for (size_t k = 0; k < (bishopattack(i + 1, j + 1, board).size()); k++) {
-                    gps.insert(bishopattack(i + 1, j + 1, board)[k]);
-                }
+                vector<vector<int>> knightres = bishopattack(i + 1, j + 1, board1);
+                gps.insert(knightres.begin(), knightres.end());
+
             }
             if (board[i][j] == (color * 4)) {
-                for (size_t k = 0; k < (queenattack(i + 1, j + 1, board).size()); k++) {
-                    gps.insert(queenattack(i + 1, j + 1, board)[k]);
-                }
+                vector<vector<int>> queenres = queenattack(i + 1, j + 1, board1);
+                gps.insert(queenres.begin(), queenres.end());
+
             }
             if (board[i][j] == (color * 5)) {
-                for (size_t k = 0; k < (kingattack(i + 1, j + 1, board).size()); k++) {
-                    gps.insert(kingattack(i + 1, j + 1, board)[k]);
-                }
+                vector<vector<int>> kingres = kingattack(i + 1, j + 1, board1);
+                gps.insert(kingres.begin(), kingres.end());
+
             }
         }
     }
-
 
     vector <int> a;
     for (int i = 0; i < 8; i++) {
