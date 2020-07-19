@@ -6,6 +6,8 @@
 #include "utils.h"
 
 using namespace std;
+
+
 Board::Board(){
     board = { {-1,-2,-3,-4,-5,-3,-2,-1},
                                         {-6,-6,-6,-6,-6,-6,-6,-6},
@@ -20,6 +22,7 @@ Board::Board(){
 vector<vector<int>> Board::getBoard() {
     return board;
 }
+
 set<vector<int>> Board::under_attack( int color) {
     set<vector<int>> gps;
     for (int i = 0; i < 8; i++) {
@@ -417,256 +420,258 @@ bool inadmissible_step(vector<vector<int>> board, int color) {
     return true;
 
 }
-    vector<vector<int>> pawnattack(int x, int y,vector<vector<int>> board, int color) {
-        vector <vector <int>> steps;
-        if (color = 1) {
-            if (x < 8 && y < 8 && board[x + 1][y + 1] >= 0) {
-                steps.push_back({ x + 1,y + 1 });
-            }
-            if (x > 1 && y < 8 && board[x - 1][y + 1] >= 0) {
-                steps.push_back({ x - 1,y + 1 });
-            }
+
+vector<vector<int>> Board::pawnattack(int x, int y,vector<vector<int>> board, int color) {
+    vector <vector <int>> steps;
+    if (color = 1) {
+        if (x < 8 && y < 8 && board[x + 1][y + 1] >= 0) {
+            steps.push_back({ x + 1,y + 1 });
+        }
+        if (x > 1 && y < 8 && board[x - 1][y + 1] >= 0) {
+            steps.push_back({ x - 1,y + 1 });
+        }
+    }
+    else {
+        if (x < 8 && y >1 && board[x + 1][y - 1] <= 0) {
+            steps.push_back({ x + 1,y - 1 });
+        }
+        if (x > 1 && y > 1 && board[x - 1][y - 1] <= 0) {
+            steps.push_back({ x - 1,y - 1 });
+        }
+    }
+    return steps;
+}
+vector<vector<int>>  Board::rookattack(int x, int y, vector<vector<int>> board) {
+    vector <vector <int>> steps;
+    while (x < 8) {
+        if (board[x + 1][y] <= 0) {
+            steps.push_back({ x + 1,y });
+            break;
         }
         else {
-            if (x < 8 && y >1 && board[x + 1][y - 1] <= 0) {
-                steps.push_back({ x + 1,y - 1 });
-            }
-            if (x > 1 && y > 1 && board[x - 1][y - 1] <= 0) {
-                steps.push_back({ x - 1,y - 1 });
-            }
+            steps.push_back({ x + 1,y });
+            x++;
         }
-        return steps;
     }
-    vector<vector<int>> rookattack(int x, int y, vector<vector<int>> board) {
-        vector <vector <int>> steps;
-        while (x < 8) {
-            if (board[x + 1][y] <= 0) {
-                steps.push_back({ x + 1,y });
-                break;
-            }
-            else {
-                steps.push_back({ x + 1,y });
-                x++;
-            }
+    while (x > 1) {
+        if (board[x - 1][y] <= 0) {
+            steps.push_back({ x - 1,y });
+            break;
         }
-        while (x > 1) {
-            if (board[x - 1][y] <= 0) {
-                steps.push_back({ x - 1,y });
-                break;
-            }
-            else {
-                steps.push_back({ x - 1,y });
-                x--;
-            }
+        else {
+            steps.push_back({ x - 1,y });
+            x--;
         }
-        while (y < 8) {
-            if (board[x][y + 1] <= 0) {
-                steps.push_back({ x,y + 1 });
-                break;
-            }
-            else {
-                steps.push_back({ x,y + 1 });
-                y++;
-            }
-        }
-        while (y > 1) {
-            if (board[x][y - 1] <= 0) {
-                steps.push_back({ x,y - 1 });
-                break;
-            }
-            else {
-                steps.push_back({ x,y - 1 });
-                y--;
-            }
-        }
-        return steps;
     }
-    vector<vector<int>> knightattack(int x, int y, vector<vector<int>> board) {
-        vector <vector <int>> steps;
-        if (x > 2) {
-            if (y < 8 && board[x - 2][y + 1] <= 0) {
-                steps.push_back({ x - 2,y + 1 });
-            }
-            if (y > 1 && board[x - 2][y - 1] <= 0) {
-                steps.push_back({ x - 2,y - 1 });
-            }
+    while (y < 8) {
+        if (board[x][y + 1] <= 0) {
+            steps.push_back({ x,y + 1 });
+            break;
         }
-        if (y < 7) {
-            if (x > 1 && board[x - 1][y + 2] <= 0) {
-                steps.push_back({ x - 1,y + 2 });
-            }
-            if (x < 8 && board[x + 1][y + 2] <= 0) {
-                steps.push_back({ x + 1,y + 2 });
-            }
+        else {
+            steps.push_back({ x,y + 1 });
+            y++;
         }
-        if (x < 7) {
-            if (y < 8 && board[x + 2][y + 1] <= 0) {
-                steps.push_back({ x + 2,y + 1 });
-            }
-            if (y > 1 && board[x + 2][y - 1] <= 0) {
-                steps.push_back({ x + 2,y - 1 });
-            }
-        }
-        if (y > 2) {
-            if (x < 8 && board[x + 1][y - 2] <= 0) {
-                steps.push_back({ x + 1,y - 2 });
-            }
-            if (x > 1 && board[x - 1][y - 2] <= 0) {
-                steps.push_back({ x - 1,y - 2 });
-            }
-        }
-        return steps;
     }
-    vector<vector<int>>bishopattack(int x, int y, vector<vector<int>> board) {
-        vector <vector <int>> steps;
-        while (x < 8 && y < 8) {
-            if (board[x + 1][y + 1] <= 0) {
-                steps.push_back({ x + 1,y + 1 });
-                break;
-            }
+    while (y > 1) {
+        if (board[x][y - 1] <= 0) {
+            steps.push_back({ x,y - 1 });
+            break;
+        }
+        else {
+            steps.push_back({ x,y - 1 });
+            y--;
+        }
+    }
+    return steps;
+}
+vector<vector<int>>  Board::knightattack(int x, int y, vector<vector<int>> board) {
+    vector <vector <int>> steps;
+    if (x > 2) {
+        if (y < 8 && board[x - 2][y + 1] <= 0) {
+            steps.push_back({ x - 2,y + 1 });
+        }
+        if (y > 1 && board[x - 2][y - 1] <= 0) {
+            steps.push_back({ x - 2,y - 1 });
+        }
+    }
+    if (y < 7) {
+        if (x > 1 && board[x - 1][y + 2] <= 0) {
+            steps.push_back({ x - 1,y + 2 });
+        }
+        if (x < 8 && board[x + 1][y + 2] <= 0) {
+            steps.push_back({ x + 1,y + 2 });
+        }
+    }
+    if (x < 7) {
+        if (y < 8 && board[x + 2][y + 1] <= 0) {
+            steps.push_back({ x + 2,y + 1 });
+        }
+        if (y > 1 && board[x + 2][y - 1] <= 0) {
+            steps.push_back({ x + 2,y - 1 });
+        }
+    }
+    if (y > 2) {
+        if (x < 8 && board[x + 1][y - 2] <= 0) {
+            steps.push_back({ x + 1,y - 2 });
+        }
+        if (x > 1 && board[x - 1][y - 2] <= 0) {
+            steps.push_back({ x - 1,y - 2 });
+        }
+    }
+    return steps;
+}
+vector<vector<int>> Board::bishopattack(int x, int y, vector<vector<int>> board) {
+    vector <vector <int>> steps;
+    while (x < 8 && y < 8) {
+        if (board[x + 1][y + 1] <= 0) {
             steps.push_back({ x + 1,y + 1 });
-            x++;
-            y++;
+            break;
         }
-        while (x < 8 && y>1) {
-            if (board[x + 1][y - 1] <= 0) {
-                steps.push_back({ x + 1,y - 1 });
-                break;
-            }
-            steps.push_back({ x + 1,y - 1 });
-            x++;
-            y--;
-        }
-        while (x > 1 && y > 1) {
-            if (board[x - 1][y - 1] <= 0) {
-                steps.push_back({ x - 1,y - 1 });
-                break;
-            }
-            steps.push_back({ x - 1,y - 1 });
-            x--;
-            y--;
-        }
-        while (x < 1 && y < 8) {
-            if (board[x - 1][y + 1] <= 0) {
-                steps.push_back({ x - 1,y + 1 });
-                break;
-            }
-            steps.push_back({ x - 1,y + 1 });
-            x--;
-            y++;
-        }
-        return steps;
-
+        steps.push_back({ x + 1,y + 1 });
+        x++;
+        y++;
     }
-    vector<vector<int>> queenattack(int x, int y, vector<vector<int>> board) {
-        vector <vector <int>> steps;
-        while (x < 8) {
-            if (board[x + 1][y] <= 0) {
-                steps.push_back({ x + 1,y });
-                break;
-            }
-            else {
-                steps.push_back({ x + 1,y });
-                x++;
-            }
+    while (x < 8 && y>1) {
+        if (board[x + 1][y - 1] <= 0) {
+            steps.push_back({ x + 1,y - 1 });
+            break;
         }
-        while (x > 1) {
-            if (board[x - 1][y] <= 0) {
-                steps.push_back({ x - 1,y });
-                break;
-            }
-            else {
-                steps.push_back({ x - 1,y });
-                x--;
-            }
+        steps.push_back({ x + 1,y - 1 });
+        x++;
+        y--;
+    }
+    while (x > 1 && y > 1) {
+        if (board[x - 1][y - 1] <= 0) {
+            steps.push_back({ x - 1,y - 1 });
+            break;
         }
-        while (y < 8) {
-            if (board[x][y + 1] <= 0) {
-                steps.push_back({ x,y + 1 });
-                break;
-            }
-            else {
-                steps.push_back({ x,y + 1 });
-                y++;
-            }
+        steps.push_back({ x - 1,y - 1 });
+        x--;
+        y--;
+    }
+    while (x < 1 && y < 8) {
+        if (board[x - 1][y + 1] <= 0) {
+            steps.push_back({ x - 1,y + 1 });
+            break;
         }
-        while (y > 1) {
-            if (board[x][y - 1] <= 0) {
-                steps.push_back({ x,y - 1 });
-                break;
-            }
-            else {
-                steps.push_back({ x,y - 1 });
-                y--;
-            }
+        steps.push_back({ x - 1,y + 1 });
+        x--;
+        y++;
+    }
+    return steps;
+
+}
+vector<vector<int>>  Board::queenattack(int x, int y, vector<vector<int>> board) {
+    vector <vector <int>> steps;
+    while (x < 8) {
+        if (board[x + 1][y] <= 0) {
+            steps.push_back({ x + 1,y });
+            break;
         }
-        while (x < 8 && y < 8) {
-            if (board[x + 1][y + 1] <= 0) {
-                steps.push_back({ x + 1,y + 1 });
-                break;
-            }
+        else {
+            steps.push_back({ x + 1,y });
+            x++;
+        }
+    }
+    while (x > 1) {
+        if (board[x - 1][y] <= 0) {
+            steps.push_back({ x - 1,y });
+            break;
+        }
+        else {
+            steps.push_back({ x - 1,y });
+            x--;
+        }
+    }
+    while (y < 8) {
+        if (board[x][y + 1] <= 0) {
+            steps.push_back({ x,y + 1 });
+            break;
+        }
+        else {
+            steps.push_back({ x,y + 1 });
+            y++;
+        }
+    }
+    while (y > 1) {
+        if (board[x][y - 1] <= 0) {
+            steps.push_back({ x,y - 1 });
+            break;
+        }
+        else {
+            steps.push_back({ x,y - 1 });
+            y--;
+        }
+    }
+    while (x < 8 && y < 8) {
+        if (board[x + 1][y + 1] <= 0) {
             steps.push_back({ x + 1,y + 1 });
-            x++;
-            y++;
+            break;
         }
-        while (x < 8 && y>1) {
-            if (board[x + 1][y - 1] <= 0) {
-                steps.push_back({ x + 1,y - 1 });
-                break;
-            }
-            steps.push_back({ x + 1,y - 1 });
-            x++;
-            y--;
-        }
-        while (x > 1 && y > 1) {
-            if (board[x - 1][y - 1] <= 0) {
-                steps.push_back({ x - 1,y - 1 });
-                break;
-            }
-            steps.push_back({ x - 1,y - 1 });
-            x--;
-            y--;
-        }
-        while (x < 1 && y < 8) {
-            if (board[x - 1][y + 1] <= 0) {
-                steps.push_back({ x - 1,y + 1 });
-                break;
-            }
-            steps.push_back({ x - 1,y + 1 });
-            x--;
-            y++;
-        }
-        return steps;
-
+        steps.push_back({ x + 1,y + 1 });
+        x++;
+        y++;
     }
-    vector<vector<int>> kingattack(int x, int y, vector<vector<int>> board) {
-        vector <vector <int>> steps;
-        if (y < 8) {
-            steps.push_back({ x, y + 1 });
-            if (x < 8) {
-                steps.push_back({ x + 1, y + 1 });
-            }
+    while (x < 8 && y>1) {
+        if (board[x + 1][y - 1] <= 0) {
+            steps.push_back({ x + 1,y - 1 });
+            break;
         }
+        steps.push_back({ x + 1,y - 1 });
+        x++;
+        y--;
+    }
+    while (x > 1 && y > 1) {
+        if (board[x - 1][y - 1] <= 0) {
+            steps.push_back({ x - 1,y - 1 });
+            break;
+        }
+        steps.push_back({ x - 1,y - 1 });
+        x--;
+        y--;
+    }
+    while (x < 1 && y < 8) {
+        if (board[x - 1][y + 1] <= 0) {
+            steps.push_back({ x - 1,y + 1 });
+            break;
+        }
+        steps.push_back({ x - 1,y + 1 });
+        x--;
+        y++;
+    }
+    return steps;
+
+}
+vector<vector<int>>  Board::kingattack(int x, int y, vector<vector<int>> board) {
+    vector <vector <int>> steps;
+    if (y < 8) {
+        steps.push_back({ x, y + 1 });
         if (x < 8) {
-            steps.push_back({ x + 1, y });
-            if (y > 1) {
-                steps.push_back({ x + 1, y - 1 });
-            }
+            steps.push_back({ x + 1, y + 1 });
         }
-        if (y > 1) {
-            steps.push_back({ x, y - 1 });
-            if (x > 1) {
-                steps.push_back({ x - 1, y - 1 });
-            }
-        }
-        if (x > 1) {
-            steps.push_back({ x - 1, y });
-            if (y < 8) {
-                steps.push_back({ x - 1, y + 1 });
-            }
-        }
-
     }
+    if (x < 8) {
+        steps.push_back({ x + 1, y });
+        if (y > 1) {
+            steps.push_back({ x + 1, y - 1 });
+        }
+    }
+    if (y > 1) {
+        steps.push_back({ x, y - 1 });
+        if (x > 1) {
+            steps.push_back({ x - 1, y - 1 });
+        }
+    }
+    if (x > 1) {
+        steps.push_back({ x - 1, y });
+        if (y < 8) {
+            steps.push_back({ x - 1, y + 1 });
+        }
+    }
+    return steps;
+
+}
 vector<vector<int>> Board::pawnposs(int x, int y, int color) {
     vector <vector <int>> steps;
     if (color = 1) {
@@ -1056,4 +1061,5 @@ void Board::move(string posit, string step) {
         board[c - 1][d - 1] = 0;
     }
     print(board);
+   
 }
