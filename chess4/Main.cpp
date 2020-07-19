@@ -10,15 +10,16 @@ using namespace std;
 int main()
 {
     Board ob;
-    vector<vector<int>> vec = ob.board;
+    vector<vector<int>> vec = ob.getBoard();
     bool checkwhite = false;
     bool checkblack;
     string posit;
     string step;
     bool game_over = false;
     bool win = false;
+    
     while (game_over == false && win==false) {
-        print(ob.board);
+        print(ob.getBoard());
         cin >> posit;
         cin >> step;
         ob.move( posit, step);
